@@ -9,11 +9,9 @@ import {
 } from "@phosphor-icons/react";
 import {
   AdressContainer,
-  AdressInputsContainer,
   Button,
   FormContainer,
   HeaderContainer,
-  Input,
   PaymentButton,
   PaymentContainer,
   PaymentsButtonsContainer,
@@ -22,10 +20,11 @@ import {
   SelectedCoffeeContainer,
 } from "./styles";
 import { SelectedCoffeeCard } from "./SelectedCoffeeCard";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { AdressForm } from "./AdressForm";
 
 const newOrderValidationSchema = zod.object({
   cep: zod.string(),
@@ -46,9 +45,11 @@ export function Checkout() {
 
   const { cart, newOrder } = useCart();
 
-  const { register, handleSubmit } = useForm<NewOrderFormData>({
+  const orderForm = useForm<NewOrderFormData>({
     resolver: zodResolver(newOrderValidationSchema),
   });
+
+  const { handleSubmit } = orderForm 
 
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentMethod>("Cartão de Crédito");
@@ -74,7 +75,7 @@ export function Checkout() {
       return;
     }
 
-    newOrder({ ...data }, paymentMethod);
+    newOrder({ ...data }, paymentMethod);''
     navigate("/sucess");
   }
 
@@ -91,54 +92,10 @@ export function Checkout() {
             </div>
           </HeaderContainer>
 
-          <AdressInputsContainer>
-            <Input
-              $variantWidth="200"
-              type="text"
-              placeholder="CEP"
-              {...register("cep")}
-              required
-            />
-            <Input
-              type="text"
-              placeholder="Rua"
-              {...register("street")}
-              required
-            />
-            <div>
-              <Input
-                type="text"
-                placeholder="Número"
-                {...register("number")}
-                required
-              />
-              <Input
-                type="text"
-                placeholder="Complemento"
-                {...register("complement")}
-              />
-            </div>
-            <div>
-              <Input
-                type="text"
-                placeholder="Bairro"
-                {...register("neighborhood")}
-                required
-              />
-              <Input
-                type="text"
-                placeholder="Cidade"
-                {...register("city")}
-                required
-              />
-              <Input
-                type="text"
-                placeholder="UF"
-                {...register("uf")}
-                required
-              />
-            </div>
-          </AdressInputsContainer>
+          <FormProvider {...orderForm}>
+            <AdressForm />
+          </FormProvider>
+
         </AdressContainer>
       </div>
 

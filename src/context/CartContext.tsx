@@ -21,9 +21,7 @@ interface Order {
 interface CartContextProps {
   cart: PurchasedCoffee[];
   order: Order | null;
-
   newOrder: (formData: NewOrderFormData, paymentMethod: string) => void;
-
   addCoffee: (coffee: Coffee, quantityPurchased: number) => void;
   removeCoffeFromOrder: (coffeeId: string) => void;
   incrementCoffeeQuantity: (coffeeId: string) => void;
@@ -40,19 +38,25 @@ function CartContextProvider({ children }: CartContextProviderProps) {
   const [cart, setCart] = useState<PurchasedCoffee[]>([]);
   const [order, setOrder] = useState<Order | null>(null);
 
-  useState(() => {
+  useEffect(() => {
     const data = localStorage.getItem("@coffee-delivery");
     if (data) {
-      const convertedData: PurchasedCoffee[] = JSON.parse(data);
-      setCart(convertedData);
-      return;
+      try {
+        const convertedData: PurchasedCoffee[] = JSON.parse(data);
+        setCart(convertedData);
+      } catch {
+        localStorage.removeItem("@coffee-delivery");
+      }
     }
-
-    setCart([]);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("@coffee-delivery", JSON.stringify(cart));
+    if (cart.length > 0) {
+      localStorage.setItem("@coffee-delivery", JSON.stringify(cart));
+      return;
+    }
+
+    localStorage.removeItem("@coffee-delivery");
   }, [cart]);
 
   function addCoffee(coffee: Coffee, quantityPurchased: number) {
