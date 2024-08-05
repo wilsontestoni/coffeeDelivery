@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Coffee } from "../pages/Home";
-import { NewOrderFormData } from "../pages/Checkout";
+import { NewOrderFormData, PaymentMethod } from "../pages/Checkout";
 
 interface PurchasedCoffee {
   coffee: Coffee;
@@ -16,12 +16,13 @@ interface PurchasedCoffee {
 interface Order {
   formData: NewOrderFormData;
   coffees: PurchasedCoffee[];
+  paymentMethod: PaymentMethod;
 }
 
 interface CartContextProps {
   cart: PurchasedCoffee[];
   order: Order | null;
-  newOrder: (formData: NewOrderFormData, paymentMethod: string) => void;
+  newOrder: (formData: NewOrderFormData, paymentMethod: PaymentMethod) => void;
   addCoffee: (coffee: Coffee, quantityPurchased: number) => void;
   removeCoffeFromOrder: (coffeeId: string) => void;
   incrementCoffeeQuantity: (coffeeId: string) => void;
@@ -121,12 +122,11 @@ function CartContextProvider({ children }: CartContextProviderProps) {
     });
   }
 
-  function newOrder(formData: NewOrderFormData, paymentMethod: string) {
-    Object.assign(formData, { paymentMethod });
-
+  function newOrder(formData: NewOrderFormData, paymentMethod: PaymentMethod) {
     const completeOrder = {
       formData,
       coffees: cart,
+      paymentMethod,
     };
 
     setOrder(completeOrder);

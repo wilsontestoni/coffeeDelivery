@@ -36,7 +36,7 @@ const newOrderValidationSchema = zod.object({
   uf: zod.string(),
 });
 
-type PaymentMethod = "Cartão de Crédito" | "Cartão de Débito" | "Dinheiro";
+export type PaymentMethod = "Cartão de Crédito" | "Cartão de Débito" | "Dinheiro";
 
 export type NewOrderFormData = zod.infer<typeof newOrderValidationSchema>;
 
@@ -64,7 +64,7 @@ export function Checkout() {
 
   const orderTotalPrice = coffeesTotalPrice + deliveryFee;
 
-  function handleSelectedPayment(e) {
+  function handleSelectedPayment(e: any) {
     const selectedPayment = e.target.value;
     setPaymentMethod(selectedPayment);
   }

@@ -51,7 +51,7 @@ export function Sucess() {
             </IconContainer>
             <span>
               <p>Pagamento na entrega</p>
-              <strong>{order?.formData.paymentMethod}</strong>
+              <strong>{order?.paymentMethod}</strong>
             </span>
           </BaseInfoContainer>
         </OrderInfoContainer>
