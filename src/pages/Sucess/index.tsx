@@ -32,7 +32,13 @@ export function Sucess() {
               </p>
               <p>
                 {order?.formData.neighborhood} - {order?.formData.city},{" "}
-                {order?.formData.uf}
+                {order?.formData.uf} 
+                { order?.formData.complement &&
+                <> 
+                  <br />
+                  <strong>Complemento</strong>: {order?.formData.complement}
+                </>
+                }
               </p>
             </span>
           </BaseInfoContainer>
