@@ -1,0 +1,68 @@
+{
+  "coffees": [
+    {
+      "id": "1",
+      "img": "/expresso-tradicional.png",
+      "tags": ["Tradicional"],
+      "title": "Expresso Tradicional",
+      "description": "O tradicional café feito com água quente e grãos moídos",
+      "price": 9.99
+    },
+    {
+      "id": "2",
+      "img": "/expresso-americano.png",
+      "tags": ["Tradicional"],
+      "title": "Expresso Americano",
+      "description": "Expresso diluído, menos intenso que o tradicional",
+      "price": 9.99
+    },
+    {
+      "id": "3",
+      "img": "/expresso-cremoso.png",
+      "tags": ["Tradicional"],
+      "title": "Expresso Cremoso",
+      "description": "Café expresso tradicional com espuma cremosa",
+      "price": 9.99
+    },
+    {
+      "id": "4",
+      "img": "/expresso-gelado.png",
+      "tags": ["Tradicional"],
+      "title": "Expresso Gelado",
+      "description": "Bebida preparada com café expresso e cubos de gelo",
+      "price": 9.99
+    },
+    {
+      "id": "5",
+      "img": "/cafe-com-leite.png",
+      "tags": ["Tradicional", "Com Leite"],
+      "title": "Café com Leite",
+      "description": "Meio a meio de expresso tradicional com leite vaporizado",
+      "price": 9.99
+    },
+    {
+      "id": "6",
+      "img": "/latte.png",
+      "tags": ["Tradicional", "Com Leite"],
+      "title": "Latte",
+      "description": "Uma dose de café expresso com o dobro de leite e espuma cremosa",
+      "price": 9.99
+    },
+    {
+      "id": "7",
+      "img": "/capuccino.png",
+      "tags": ["Tradicional", "Com Leite"],
+      "title": "Capuccino",
+      "description": "Bebida com canela feita de doses iguais de café, leite e espuma",
+      "price": 9.99
+    },
+    {
+      "id": "8",
+      "img": "/macchiato.png",
+      "tags": ["Tradicional", "Com Leite"],
+      "title": "Macchiato",
+      "description": "Café expresso misturado com um pouco de leite quente e espuma",
+      "price": 9.99
+    }
+  ]
+}
