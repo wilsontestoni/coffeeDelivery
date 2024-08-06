@@ -8,7 +8,7 @@ import {
   TagsContainer,
 } from "./style";
 
-import { ShoppingCart } from "@phosphor-icons/react";
+import { ShoppingCart, Check } from "@phosphor-icons/react";
 import { CoffeeQuantityController } from "../../../../components/CoffeeQuantityController";
 import { useState } from "react";
 import { useCart } from "../../../../context/CartContext";
@@ -28,6 +28,7 @@ interface CoffeeCard {
 export function CoffeeCard({ coffee }: CoffeeCard) {
   const { addCoffee } = useCart();
 
+  const [coffePurchasedSubmited, setCoffePurchasedSubmited] = useState(false);
   const [coffeesQuantity, setCoffeesQuantity] = useState(1);
 
   function decrementCoffeeQuantity() {
@@ -45,7 +46,16 @@ export function CoffeeCard({ coffee }: CoffeeCard) {
   function handlePurchaseCoffee(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (coffePurchasedSubmited) {
+      return;
+    }
+
+    setCoffePurchasedSubmited(true);
+
     addCoffee(coffee, coffeesQuantity);
+    setTimeout(() => {
+      setCoffePurchasedSubmited(false);
+    }, 1500);
   }
 
   return (
@@ -71,7 +81,11 @@ export function CoffeeCard({ coffee }: CoffeeCard) {
           />
 
           <CartButton type="submit">
-            <ShoppingCart size={22} weight="fill" color="#fff" />
+            {coffePurchasedSubmited ? (
+              <Check size={22} weight="bold" color="#fff" />
+            ) : (
+              <ShoppingCart size={22} weight="fill" color="#fff" />
+            )}
           </CartButton>
         </Form>
       </Footer>
