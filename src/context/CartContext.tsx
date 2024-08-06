@@ -3,10 +3,18 @@ import {
   ReactNode,
   useContext,
   useEffect,
-  useState,
+  useReducer,
 } from "react";
-import { Coffee } from "../pages/Home";
+import { Coffee } from "../pages/Home/components/CoffeeCard";
 import { NewOrderFormData, PaymentMethod } from "../pages/Checkout";
+import { cartReducer, CartState } from "../reducers/cart/reducer";
+import {
+  addNewCoffeeAction,
+  removeCoffeFromOrderAction,
+  incrementCoffeeQuantityAction,
+  decrementCoffeeQuantityAction,
+  newOrderAction,
+} from "../reducers/cart/action";
 
 interface PurchasedCoffee {
   coffee: Coffee;
@@ -36,101 +44,70 @@ interface CartContextProviderProps {
 const CartContext = createContext({} as CartContextProps);
 
 function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cart, setCart] = useState<PurchasedCoffee[]>([]);
-  const [order, setOrder] = useState<Order | null>(null);
+  const initialState: CartState = {
+    cart: [],
+    order: null,
+  };
 
-  useEffect(() => {
-    const data = localStorage.getItem("@coffee-delivery");
-    if (data) {
-      try {
-        const convertedData: PurchasedCoffee[] = JSON.parse(data);
-        setCart(convertedData);
-      } catch {
-        localStorage.removeItem("@coffee-delivery");
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    initialState,
+    (initialState) => {
+      const storedCoffeState = localStorage.getItem("@coffee-delivery");
+
+      if (storedCoffeState) {
+        try {
+          const parsedState = JSON.parse(storedCoffeState);
+          return {
+            cart: parsedState.cart || [],
+            order: parsedState.order || null,
+          };
+        } catch {
+          localStorage.removeItem("@coffee-delivery");
+        }
       }
+
+      return initialState;
     }
-  }, []);
+  );
+
+  const { cart, order } = cartState;
 
   useEffect(() => {
+    const stateToStore = { cart, order };
+
     if (cart.length > 0) {
-      localStorage.setItem("@coffee-delivery", JSON.stringify(cart));
+      localStorage.setItem("@coffee-delivery", JSON.stringify(stateToStore));
       return;
     }
 
     localStorage.removeItem("@coffee-delivery");
-  }, [cart]);
+  }, [cart, order]);
 
   function addCoffee(coffee: Coffee, quantityPurchased: number) {
-    setCart((prevCart) => {
-      const existingCoffee = prevCart.find(
-        (orderedCoffee) => orderedCoffee.coffee.id === coffee.id
-      );
-
-      if (existingCoffee) {
-        return prevCart.map((orderedCoffee) =>
-          orderedCoffee.coffee.id === coffee.id
-            ? {
-                ...orderedCoffee,
-                quantityPurchased:
-                  orderedCoffee.quantityPurchased + quantityPurchased,
-              }
-            : orderedCoffee
-        );
-      } else {
-        return [...prevCart, { coffee, quantityPurchased }];
-      }
-    });
+    dispatch(addNewCoffeeAction(coffee, quantityPurchased));
   }
 
   function removeCoffeFromOrder(coffeeId: string) {
-    const orderWithoutSelectedCoffee = cart.filter(
-      (orderedCoffeeInfo) => orderedCoffeeInfo.coffee.id !== coffeeId
-    );
-
-    setCart(orderWithoutSelectedCoffee);
+    dispatch(removeCoffeFromOrderAction(coffeeId));
   }
 
   function incrementCoffeeQuantity(coffeeId: string) {
-    setCart((prevCart) => {
-      return prevCart.map((orderedCoffee) => {
-        if (orderedCoffee.coffee.id === coffeeId) {
-          return {
-            ...orderedCoffee,
-            quantityPurchased: orderedCoffee.quantityPurchased + 1,
-          };
-        }
-        return orderedCoffee;
-      });
-    });
+    dispatch(incrementCoffeeQuantityAction(coffeeId));
   }
 
   function decrementCoffeeQuantity(coffeeId: string) {
-    setCart((prevCart) => {
-      return prevCart.map((orderedCoffee) => {
-        if (
-          orderedCoffee.coffee.id === coffeeId &&
-          orderedCoffee.quantityPurchased > 1
-        ) {
-          return {
-            ...orderedCoffee,
-            quantityPurchased: orderedCoffee.quantityPurchased - 1,
-          };
-        } else {
-          return orderedCoffee;
-        }
-      });
-    });
+    dispatch(decrementCoffeeQuantityAction(coffeeId));
   }
 
   function newOrder(formData: NewOrderFormData, paymentMethod: PaymentMethod) {
-    const completeOrder = {
+    const completeOrder: Order = {
       formData,
       coffees: cart,
       paymentMethod,
     };
 
-    setOrder(completeOrder);
-    setCart([]);
+    dispatch(newOrderAction(completeOrder));
   }
 
   return (

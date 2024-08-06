@@ -11,9 +11,17 @@ import {
 import { ShoppingCart } from "@phosphor-icons/react";
 import { CoffeeQuantityController } from "../../../../components/CoffeeQuantityController";
 import { useState } from "react";
-import { Coffee } from "../..";
 import { useCart } from "../../../../context/CartContext";
 
+type Tag = string;
+export interface Coffee {
+  id: string;
+  img: string;
+  tags: Tag[];
+  title: string;
+  description: string;
+  price: number;
+}
 interface CoffeeCard {
   coffee: Coffee;
 }

@@ -3,16 +3,6 @@ import { Intro } from "./components/Intro";
 import { CoffeeList, CoffeeSection } from "./styles";
 import { coffees } from "../../../data.json";
 
-type Tag = string;
-export interface Coffee {
-  id: string;
-  img: string;
-  tags: Tag[];
-  title: string;
-  description: string;
-  price: number;
-}
-
 export function Home() {
   return (
     <>
