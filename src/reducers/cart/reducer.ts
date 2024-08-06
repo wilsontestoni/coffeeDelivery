@@ -14,7 +14,7 @@ interface Order {
 }
 
 export interface CartState {
-  order: Order | null;
+  order?: Order | null;
   cart: PurchasedCoffee[];
 }
 

@@ -29,7 +29,7 @@ interface Order {
 
 interface CartContextProps {
   cart: PurchasedCoffee[];
-  order: Order | null;
+  order?: Order | null;
   newOrder: (formData: NewOrderFormData, paymentMethod: PaymentMethod) => void;
   addCoffee: (coffee: Coffee, quantityPurchased: number) => void;
   removeCoffeFromOrder: (coffeeId: string) => void;
