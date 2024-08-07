@@ -86,7 +86,7 @@ export const PaymentsButtonsContainer = styled.div`
 interface PaymentButtonProps {
   $selected: boolean;
 }
-export const PaymentButton = styled.button<PaymentButtonProps>`
+export const PaymentButton = styled.label<PaymentButtonProps>`
   width: 100%;
   height: 51px;
   padding: 16px;
@@ -107,6 +107,11 @@ export const PaymentButton = styled.button<PaymentButtonProps>`
   background: ${(props) => props.theme["base-button"]};
   border-radius: 6px;
 
+  input {
+    appearance: none;
+    display: none;
+  }
+
   svg {
     color: ${(props) => props.theme["purple"]};
   }
@@ -122,7 +127,6 @@ export const SelectedCoffeeContainer = styled(BaseContainer)`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
   border-radius: 6px 44px;
 `;
 

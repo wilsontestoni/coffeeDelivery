@@ -6,7 +6,7 @@ import {
   SelectedCoffeeContainer,
   Price,
 } from "./styles";
-import { Coffee } from "../../Home";
+import { Coffee } from "@phosphor-icons/react";
 
 import { useCart } from "../../../context/CartContext";
 

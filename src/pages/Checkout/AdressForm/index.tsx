@@ -1,49 +1,59 @@
 import { useFormContext } from "react-hook-form";
 import { AdressInputsContainer } from "../styles";
-import { Input } from "./styles";
-
+import { InputContainer } from "./styles";
 
 export function AdressForm() {
-
-  const { register } = useFormContext()
+  const { register } = useFormContext();
 
   return (
     <AdressInputsContainer>
-      <Input
-        $variantWidth="200"
-        type="text"
-        placeholder="CEP"
-        {...register("cep")}
-        required
-      />
-      <Input type="text" placeholder="Rua" {...register("street")} required />
+      <InputContainer $variantWidth="200">
+        <input type="number" placeholder="CEP" {...register("cep")} />
+      </InputContainer>
+
+      <InputContainer>
+        <input type="text" placeholder="Rua" {...register("street")} required />
+      </InputContainer>
+
       <div>
-        <Input
-          type="text"
-          placeholder="Número"
-          {...register("number")}
-          required
-        />
-        <Input
-          type="text"
-          placeholder="Complemento"
-          {...register("complement")}
-        />
+        <InputContainer>
+          <input
+            type="text"
+            placeholder="Número"
+            {...register("number")}
+            required
+          />
+        </InputContainer>
+        <InputContainer>
+          <input
+            type="text"
+            placeholder="Complemento"
+            {...register("complement")}
+          />
+          <span>Opcional</span>
+        </InputContainer>
       </div>
+
       <div>
-        <Input
-          type="text"
-          placeholder="Bairro"
-          {...register("neighborhood")}
-          required
-        />
-        <Input
-          type="text"
-          placeholder="Cidade"
-          {...register("city")}
-          required
-        />
-        <Input type="text" placeholder="UF" {...register("uf")} required />
+        <InputContainer>
+          <input
+            type="text"
+            placeholder="Bairro"
+            {...register("neighborhood")}
+            required
+          />
+        </InputContainer>
+        <InputContainer>
+          <input
+            type="text"
+            placeholder="Cidade"
+            {...register("city")}
+            required
+          />
+        </InputContainer>
+        <InputContainer>
+          <input type="text" placeholder="UF" {...register("uf")} required />
+        </InputContainer>
       </div>
     </AdressInputsContainer>
   );
