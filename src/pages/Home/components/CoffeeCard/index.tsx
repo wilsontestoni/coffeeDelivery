@@ -10,7 +10,7 @@ import {
 
 import { ShoppingCart, Check } from "@phosphor-icons/react";
 import { CoffeeQuantityController } from "../../../../components/CoffeeQuantityController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../../../../context/CartContext";
 
 type Tag = string;
@@ -53,10 +53,23 @@ export function CoffeeCard({ coffee }: CoffeeCard) {
     setCoffePurchasedSubmited(true);
 
     addCoffee(coffee, coffeesQuantity);
-    setTimeout(() => {
-      setCoffePurchasedSubmited(false);
-    }, 1500);
   }
+
+  useEffect(() => {
+    let timeoutId: number;
+
+    if (coffePurchasedSubmited) {
+      timeoutId = setTimeout(() => {
+        setCoffePurchasedSubmited(false)
+      }, 1000)
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [coffePurchasedSubmited])
 
   return (
     <CoffeeCardContainer>
@@ -80,7 +93,7 @@ export function CoffeeCard({ coffee }: CoffeeCard) {
             decrementQuantity={decrementCoffeeQuantity}
           />
 
-          <CartButton type="submit">
+          <CartButton $coffePurchased={coffePurchasedSubmited} disabled={coffePurchasedSubmited} type="submit">
             {coffePurchasedSubmited ? (
               <Check size={22} weight="bold" color="#fff" />
             ) : (

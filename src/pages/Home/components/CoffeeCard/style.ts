@@ -85,7 +85,10 @@ export const Form = styled.form`
   gap: 0.5rem;
 `;
 
-export const CartButton = styled.button`
+interface CartButton {
+  $coffePurchased?: boolean;
+}
+export const CartButton = styled.button<CartButton>`
   width: 38px;
   height: 38px;
 
@@ -94,10 +97,10 @@ export const CartButton = styled.button`
   border: none;
   border-radius: 6px;
 
-  background: ${(props) => props.theme["purple-dark"]};
-  transition: background-color 0.1s;
+  background: ${({ theme, $coffePurchased }) =>  $coffePurchased ? theme["purple"] : theme["purple-dark"]};
+  transition: background-color 1s;
 
   &:hover {
-    background: ${(props) => props.theme["purple"]};
+    background: ${({ theme }) => theme["purple"]};
   }
 `;
