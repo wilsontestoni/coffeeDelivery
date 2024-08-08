@@ -1,4 +1,4 @@
-import { NewOrderFormData, PaymentMethod } from "../../pages/Checkout";
+import { NewOrderFormData } from "../../pages/Checkout";
 import { Coffee } from "../../pages/Home/components/CoffeeCard";
 import { ActionTypes } from "./action";
 
@@ -10,7 +10,6 @@ interface PurchasedCoffee {
 interface Order {
   formData: NewOrderFormData;
   coffees: PurchasedCoffee[];
-  paymentMethod: PaymentMethod;
 }
 
 export interface CartState {
@@ -22,7 +21,6 @@ export function cartReducer(cartState: CartState, action: any): CartState {
   switch (action.type) {
     case ActionTypes.ADD_NEW_COFFEE:
       const { coffee, quantityPurchased } = action.payload;
-      console.log("cheguei no reducer");
 
       const existingCoffee = cartState.cart.find(
         (item) => item.coffee.id === coffee.id
@@ -81,7 +79,7 @@ export function cartReducer(cartState: CartState, action: any): CartState {
       const listWithCoffeeQuantityDecreasedUpdated = cartState.cart.map(
         (orderedCoffee) => {
           if (orderedCoffee.coffee.id === action.payload.coffeeId) {
-            if (orderedCoffee.quantityPurchased > 0) {
+            if (orderedCoffee.quantityPurchased > 1) {
               return {
                 ...orderedCoffee,
                 quantityPurchased: orderedCoffee.quantityPurchased - 1,

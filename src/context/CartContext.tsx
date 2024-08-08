@@ -6,7 +6,7 @@ import {
   useReducer,
 } from "react";
 import { Coffee } from "../pages/Home/components/CoffeeCard";
-import { NewOrderFormData, PaymentMethod } from "../pages/Checkout";
+import { NewOrderFormData } from "../pages/Checkout";
 import { cartReducer, CartState } from "../reducers/cart/reducer";
 import {
   addNewCoffeeAction,
@@ -24,13 +24,12 @@ interface PurchasedCoffee {
 interface Order {
   formData: NewOrderFormData;
   coffees: PurchasedCoffee[];
-  paymentMethod: PaymentMethod;
 }
 
 interface CartContextProps {
   cart: PurchasedCoffee[];
   order?: Order | null;
-  newOrder: (formData: NewOrderFormData, paymentMethod: PaymentMethod) => void;
+  newOrder: (formData: NewOrderFormData) => void;
   addCoffee: (coffee: Coffee, quantityPurchased: number) => void;
   removeCoffeFromOrder: (coffeeId: string) => void;
   incrementCoffeeQuantity: (coffeeId: string) => void;
@@ -100,11 +99,10 @@ function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch(decrementCoffeeQuantityAction(coffeeId));
   }
 
-  function newOrder(formData: NewOrderFormData, paymentMethod: PaymentMethod) {
+  function newOrder(formData: NewOrderFormData) {
     const completeOrder: Order = {
       formData,
       coffees: cart,
-      paymentMethod,
     };
 
     dispatch(newOrderAction(completeOrder));

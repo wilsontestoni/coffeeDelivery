@@ -34,12 +34,18 @@ const newOrderValidationSchema = zod.object({
   neighborhood: zod.string(),
   city: zod.string(),
   uf: zod.string(),
+
+  paymentMethod: zod.enum([
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Dinheiro",
+  ]),
 });
 
-export type PaymentMethod =
-  | "Cartão de Crédito"
-  | "Cartão de Débito"
-  | "Dinheiro";
+// export type PaymentMethod =
+//   | "Cartão de Crédito"
+//   | "Cartão de Débito"
+//   | "Dinheiro";
 
 export type NewOrderFormData = zod.infer<typeof newOrderValidationSchema>;
 
@@ -52,10 +58,9 @@ export function Checkout() {
     resolver: zodResolver(newOrderValidationSchema),
   });
 
-  const { handleSubmit } = orderForm;
+  const { handleSubmit, register } = orderForm;
 
-  const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("Cartão de Crédito");
+  const [paymentMethod, setPaymentMethod] = useState("Cartão de Crédito");
 
   const deliveryFee = 3.5;
 
@@ -69,19 +74,20 @@ export function Checkout() {
 
   function handleSelectedPayment(e: any) {
     const selectedPayment = e.target.value;
-    console.log(selectedPayment)
+    console.log(selectedPayment);
     setPaymentMethod(selectedPayment);
   }
 
   function handleConfirmNewOrder(data: NewOrderFormData) {
-    console.log(data)
+    console.log(data);
     if (cart.length === 0) {
       alert("É preciso ter items no carrinho para finalizar o pedido!");
       return;
     }
 
+    console.log(data)
 
-    newOrder({ ...data }, paymentMethod);
+    newOrder({ ...data });
 
     navigate("/sucess");
   }
@@ -113,21 +119,36 @@ export function Checkout() {
             <p>Informe o endereço onde deseja receber seu pedido</p>
           </div>
         </HeaderContainer>
-        
+
         <PaymentsButtonsContainer>
           <PaymentButton $selected={"Cartão de Crédito" === paymentMethod}>
-            <input type="radio" name="paymentMethod" value="Cartão de Crédito" onClick={handleSelectedPayment} />
+            <input
+              type="radio"
+              {...register("paymentMethod")}
+              value="Cartão de Crédito"
+              onClick={handleSelectedPayment}
+            />
             <CreditCard size={16} />
             Cartão de Crédito
           </PaymentButton>
           <PaymentButton $selected={"Cartão de Débito" === paymentMethod}>
-            <input type="radio" name="paymentMethod" value="Cartão de Débito" onClick={handleSelectedPayment} />
+            <input
+              type="radio"
+              {...register("paymentMethod")}
+              value="Cartão de Débito"
+              onClick={handleSelectedPayment}
+            />
             <Bank size={16} />
             Cartão de Débito
           </PaymentButton>
 
           <PaymentButton $selected={"Dinheiro" === paymentMethod}>
-            <input type="radio" name="paymentMethod" value="Dinheiro" onClick={handleSelectedPayment} />
+            <input
+              type="radio"
+              {...register("paymentMethod")}
+              value="Dinheiro"
+              onClick={handleSelectedPayment}
+            />
             <Money size={16} />
             Dinheiro
           </PaymentButton>

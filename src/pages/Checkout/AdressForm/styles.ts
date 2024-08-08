@@ -10,11 +10,10 @@ export const InputContainer = styled.div<InputProps>`
   flex: 1;
 
   font-family: "Roboto";
-  font-style: normal;
-  font-size: 14px;
+
   width: ${(props) =>
     props.$variantWidth ? `${props.$variantWidth}px` : "100%"};
-  height: 42px;
+
   padding: 12px;
 
   background: ${(props) => props.theme["base-input"]};
@@ -23,17 +22,34 @@ export const InputContainer = styled.div<InputProps>`
   border: 1px solid ${(props) => props.theme["base-button"]};
 
   input {
+    font-size: 14px;
     color: ${(props) => props.theme["base-text"]};
     width: 100%;
-    background: transparent;
+    background: ${(props) => props.theme["base-input"]};
     border: none;
+
+    &::placeholder {
+      color: ${(props) => props.theme["base-label"]};
+    }
+
+    &:-webkit-autofill {
+      background-color: ${(props) => props.theme["base-input"]} !important;
+      color: ${(props) => props.theme["base-text"]} !important;
+      -webkit-text-fill-color: ${(props) =>
+        props.theme["base-text"]} !important;
+      -webkit-box-shadow: 0 0 0 30px ${(props) => props.theme["base-input"]}
+        inset !important;
+      box-shadow: 0 0 0 30px ${(props) => props.theme["base-input"]} inset !important;
+    }
   }
 
   span {
+    font-style: italic;
+    font-size: 0.75rem;
     color: ${(props) => props.theme["base-label"]};
   }
 
-  &:focus {
+  &:focus-within {
     border: 1px solid ${(props) => props.theme["yellow-dark"]};
   }
 `;
